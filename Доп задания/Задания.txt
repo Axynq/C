@@ -1,0 +1,360 @@
+**№1**
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <Windows.h>
+// #define If_check
+using namespace std;
+
+ofstream fout;
+ifstream fin;
+string outpath = "output.txt";
+string inpath = "input.txt";
+
+void output_check(double n);
+void input_reading(string filename);
+
+void input_reading(string filename)
+{
+	double num;
+	fin.open(filename);
+	if (!fin.is_open())
+	{
+#ifdef If_check
+		cout << "Error" << std::endl;
+#endif If_check	
+	}
+	else
+	{
+#ifdef If_check
+		cout << "Is open" << std::endl;
+#endif If_check
+
+		while (!fin.eof())
+		{
+			fin >> num;
+			cout << "n = " << num;
+		}
+	}
+	fin.close();
+
+	num = pow(2,num);
+	output_check(num);
+}
+
+void output_check(double n)
+{
+	string text = "Result = ";
+	fout.open(outpath);
+	fout << text << n;
+	fout.close();
+	system("start output.txt");
+}
+int main()
+{
+	
+	SetConsoleOutputCP(1251);
+	SetConsoleCP(1251);
+	input_reading(inpath);
+	return 0;
+}
+
+**№2**
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <Windows.h>
+// #define If_check
+using namespace std;
+
+bool check(int a, int b)
+{
+	return b - a > 1;
+}
+
+void random_gen(vector <int> vec)
+{
+	for (int i = 0; i < 5; ++i)
+	{
+		vec.push_back(rand() % 20 + 1);
+	}
+	
+	sort(vec.begin(), vec.end(), [](int a, int b) {
+		return a < b;
+	});
+
+	for (auto &i : vec)
+	{
+		cout << i << " ";
+	}
+
+	cout << endl;
+	cout << "Минимальное отсутсвующее - ";
+	for (int i = 0; i < 2; ++i)
+	{
+		if (check(vec[i], vec[i + 1]) == true)
+			cout << vec[i] + 1 << " ";
+	}
+}
+
+int main()
+{
+	SetConsoleOutputCP(1251);
+	SetConsoleCP(1251);
+	vector <int> vector;
+	cout << "Последовательность натуральных чисел: ";
+	random_gen(vector);
+	system("pause>null");
+	return 0;
+}
+
+**№3**
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <Windows.h>
+// #define If_check
+using namespace std;
+
+ifstream fin;
+string inpath = "input.txt";
+
+void input_reading(string filename)
+{
+	string text;
+	vector <string> vec;
+	string res;
+	fin.open(filename);
+	if (!fin.is_open())
+	{
+#ifdef If_check
+		cout << "Error" << std::endl;
+#endif If_check	
+	}
+	else
+	{
+#ifdef If_check
+		cout << "Is open" << std::endl;
+#endif If_check
+
+		while (getline(fin, text))
+		{
+			vec.push_back(text);
+		}
+		int k = 0;
+		for (int i = 0; i < vec.size(); ++i)
+		{
+			for (int c = 0; c < vec.size(); ++c)
+			{
+				if (vec[c] == vec[i])
+				{
+					++k;
+				}
+			}
+			if (k == 1) 
+			{
+				cout << "Уникальная строка - " << vec[i] << endl;
+				k = 0;
+			}
+			else k = 0;
+		}
+	}
+	fin.close();
+}
+
+int main()
+{
+	SetConsoleOutputCP(1251);
+	SetConsoleCP(1251);
+	input_reading(inpath);
+	system("pause>null");
+	return 0;
+}
+
+**№4**
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include <algorithm>
+#include <Windows.h>
+// #define If_check
+using namespace std;
+
+void counter(int N)
+{
+	vector<int> numbers = {0,1,2,3,4,5,6,7,8,9};
+	vector<int> numbers_primal = { 0,1,2,3,4,5,6,7,8,9 };
+	int start_num = N;
+	int n = N;
+	int count = 0;
+	while (n) {
+		n /= 10;
+		count++;
+	}
+
+	int k = 0;
+	for (int i = 0; i < count; ++i)
+	{
+		n = N % 10;
+		N = N / 10;
+		
+		for (int c = 0; c < numbers.size(); c++)
+		{
+			if (n == numbers[c])
+			{
+				k++;
+				numbers[c] = -1;
+			}
+		
+		}
+	}
+	numbers = numbers_primal;
+	if (k > 2)
+	{
+		start_num++;
+		counter(start_num); //рекурсия
+	}
+	else cout << "Ближайшее двоякое число - " << start_num << endl;
+	
+	
+}
+
+int main()
+{
+	int num;
+	SetConsoleOutputCP(1251);
+	SetConsoleCP(1251);
+	cout << "Введите натуральное число: ";
+	cin >> num;
+	counter(num);
+	system("pause>null");
+	return 0;
+}
+
+**№5**
+#include <iostream>
+#include <Windows.h>
+// #define If_check
+using namespace std;
+
+bool Num(int n)
+{
+	for (int k = 2; k <= n - 1; ++k)
+	{
+		int temp = n % k;
+		if (temp == 1)
+		{
+			if (k == n - 1) return false;
+		}
+		else if (temp == 0) return true;
+	}
+
+}
+
+void simple_num(int N)
+{
+	int temp = 0;
+
+	for (int k = 2; k <= N; ++k)
+	{
+		if (N % k == 1)
+		{
+			k++;
+		}
+		if (N % k == 0)
+		{
+			temp = N / k;
+			cout << k;
+			if (temp != 1)cout << "*";
+			simple_num(temp);
+		}
+		if (temp == 1) exit(0);
+
+	}
+
+}
+
+int main()
+{
+	int num, c = 0;
+	SetConsoleOutputCP(1251);
+	SetConsoleCP(1251);
+	while (c != 2)
+	{
+		c++;
+		cout << "Введите натуральное число: ";
+		cin >> num;
+		bool res = Num(num);
+		if (res == true)
+		{
+			cout << "Разложение на множители:" << endl;
+			simple_num(num);
+		}
+		else cout << "Число и так простое" << endl;
+	}
+	system("pause>null");
+	return 0;
+}
+
+
+**№6**
+#include <iostream>
+#include <Windows.h>
+// #define If_check
+using namespace std;
+
+bool Num(int n)
+{
+	int x = 0;
+	if (n < 4) return false;
+	for (int k = 2; k <= n - 1; ++k)
+	{
+		int temp = n % k;
+		if (temp == 1)
+		{
+			if (k == n-1) return false;
+		}
+		else if (temp == 0) return true;
+	}
+}
+
+
+int main()
+{
+	int a = 0, b = 0;
+	SetConsoleOutputCP(1251);
+	SetConsoleCP(1251);
+	cout << "Введите 2 числа для диапазона:" << endl;
+	cin >> a >> b;
+	while (a != b)
+	{
+		bool res = Num(a);
+		if (res == false) cout << a << " ";
+		a++;
+	}
+	system("pause>null");
+	return 0;
+}
+
+**№7**
+#include <iostream>
+#include <Windows.h>
+
+using namespace std;
+
+int main()
+{
+	int a = 3, b = 5;
+	SetConsoleOutputCP(1251);
+	SetConsoleCP(1251);
+	cout << " a = " << a << " b = " << b << endl;
+
+	a = a * b; // a = 15 
+	b = a / b; // b = 3
+	a = a / b; // a = 5
+	cout << "New: " << endl;
+	cout << " a = " << a << " b = " << b << endl;
+	system("pause>null");
+	return 0;
+}
